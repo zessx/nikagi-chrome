@@ -111,12 +111,14 @@ function init() {
         savePreset.innerHtml = 'Save preset';
         chrome.storage.sync.get(['nikagi_presets'], function(presets) {
             presets = presets.nikagi_presets;
-            if (preset = presets[value('public_key')]) {
-                document.querySelector('[name=length]').value = preset.length;
-                document.querySelector('[name=lowercases]').checked = preset.lowercases;
-                document.querySelector('[name=uppercases]').checked = preset.uppercases;
-                document.querySelector('[name=digits]').checked = preset.digits;
-                document.querySelector('[name=symbols]').checked = preset.symbols;
+            if (presets) {
+                if (preset = presets[value('public_key')]) {
+                    document.querySelector('[name=length]').value = preset.length;
+                    document.querySelector('[name=lowercases]').checked = preset.lowercases;
+                    document.querySelector('[name=uppercases]').checked = preset.uppercases;
+                    document.querySelector('[name=digits]').checked = preset.digits;
+                    document.querySelector('[name=symbols]').checked = preset.symbols;
+                }
             }
         });
     });
@@ -126,6 +128,9 @@ function init() {
         event.returnValue = false;
         chrome.storage.sync.get(['nikagi_presets'], function(presets) {
             presets = presets.nikagi_presets;
+            if (!presets) {
+                presets = [];
+            }
             presets[value('public_key')] = {
                 length: value('length'),
                 lowercases: option('lowercases'),
