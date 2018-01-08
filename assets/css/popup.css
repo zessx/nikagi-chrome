@@ -65,7 +65,8 @@ legend {
     color: #5A1710;
 }
 
-input {
+input,
+button {
     color: inherit;
     font: inherit;
     line-height: normal;
@@ -150,8 +151,10 @@ input[type="password"]:valid+label {
     font-size: 0.8em;
 }
 
-input[type="submit"] {
+input[type="submit"],
+button {
     -webkit-appearance: button;
+    display: block;
     cursor: pointer;
     width: calc(100% - 6px);
     background: none;
@@ -163,9 +166,37 @@ input[type="submit"] {
 }
 
 input[type="submit"]:hover,
-input[type="submit"]:focus {
+input[type="submit"]:focus,
+button:hover,
+button:focus {
     color: #E74C3C;
     box-shadow: 0 0 0 2px #1A2530, 0 0 0 3px #E74C3C;
+}
+
+input[type="submit"].valid,
+button.valid {
+    color: #33C366 !important;
+    box-shadow: 0 0 0 2px #1A2530, 0 0 0 3px #33C366 !important;
+}
+
+input[type="submit"]:disabled,
+input[type="submit"][disabled],
+button:disabled,
+button[disabled] {
+    pointer-events:none;
+    opacity: 0.3;
+}
+
+.sync_presets {
+    display: flex;
+}
+.sync_presets button {
+    text-align: right;
+    box-shadow: none;
+    margin: 0;
+}
+.sync_presets button:last-child {
+    text-align: left;
 }
 
 textarea {
@@ -179,107 +210,4 @@ textarea {
     color: white;
     cursor: default;
     resize: none;
-}
-
-
-/* Administration */
-
-body.admin {
-    background-color: #9A392F;
-}
-
-body.admin input[type="checkbox"]+label::before {
-    box-shadow: 0 0 0 2px #9A392F, 0 0 0 3px #fff;
-}
-
-body.admin input[type="text"],
-body.admin input[type="password"] {
-    box-shadow: 0 2px #9A392F, 0 3px #fff;
-}
-
-body.admin input[type="text"]+label,
-body.admin input[type="password"]+label {
-    color: #5A1710;
-}
-
-body.admin input[type="submit"] {
-    box-shadow: 0 0 0 2px #9A392F, 0 0 0 3px #fff;
-}
-
-body.admin input[type="submit"]:hover,
-body.admin input[type="submit"]:focus {
-    color: #5A1710;
-    box-shadow: 0 0 0 2px #9A392F, 0 0 0 3px #5A1710;
-}
-
-.actions {
-    position: fixed;
-    bottom: 1em;
-    left: 1em;
-}
-
-.actions a {
-    height: 2em;
-    width: 2em;
-    float: left;
-    padding: 0.2em;
-    opacity: 0.3;
-    transition: opacity 0.2s;
-}
-
-.actions a:hover {
-    opacity: 1;
-}
-
-table {
-    width: 100%;
-    max-width: 700px;
-    border-collapse: collapse;
-    table-layout: fixed;
-}
-
-tbody tr:nth-child(odd) {
-    background: rgba(255, 255, 255, .1);
-}
-
-th,
-td {
-    text-align: center;
-    padding: 0.3em 0.5em;
-}
-
-thead th {
-    font-weight: normal;
-    opacity: 0.3;
-}
-
-th:first-child {
-    width: 30%;
-}
-
-th:last-child {
-    width: 2.2em;
-}
-
-span.disabled {
-    opacity: 0.3;
-}
-
-.link-delete,
-.link-add {
-    display: block;
-    height: 1.4em;
-    width: 1.4em;
-    border: none;
-    background: none;
-    padding: 0;
-    font-size: inherit;
-    cursor: pointer;
-    opacity: 0.3;
-    transition: opacity 0.2s;
-}
-
-.link-delete:hover,
-.link-add:hover {
-    opacity: 1;
 }

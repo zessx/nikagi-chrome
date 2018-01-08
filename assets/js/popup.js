@@ -47,24 +47,24 @@ function generate() {
         pass = '',
         reserved = 0;
 
-    if(option('lowercases')) {
+    if (option('lowercases')) {
         reserved++;
         charsets['lowercases'] = 'tdnbeisrvmlawgfckxyhjzpuqo';
     }
-    if(option('uppercases')) {
+    if (option('uppercases')) {
         reserved++;
         charsets['uppercases'] = 'FWRTIEBAVUCMGZOXDKHNJYPQSL';
     }
-    if(option('digits')) {
+    if (option('digits')) {
         reserved++;
         charsets['digits'] = '3876415290';
     }
-    if(option('symbols')) {
+    if (option('symbols')) {
         reserved++;
         charsets['symbols'] = '*],=}~&|>+%/.@$_?<:[!){^;#(';
     }
 
-    if(reserved == 0) {
+    if (reserved == 0) {
         return false;
     }
 
@@ -74,22 +74,22 @@ function generate() {
         pass += character;
     }
 
-    if(option('lowercases')) {
+    if (option('lowercases')) {
         var position = hexdec(hash[index++]).modulo(pass.length + 1);
         character = charsets.lowercases[hexdec(hash[index++]).modulo(charsets.lowercases.length)];
         pass = substr_replace(pass, character, position, 0);
     }
-    if(option('uppercases')) {
+    if (option('uppercases')) {
         var position = hexdec(hash[index++]).modulo(pass.length + 1);
         character = charsets.uppercases[hexdec(hash[index++]).modulo(charsets.uppercases.length)];
         pass = substr_replace(pass, character, position, 0);
     }
-    if(option('digits')) {
+    if (option('digits')) {
         var position = hexdec(hash[index++]).modulo(pass.length + 1);
         character = charsets.digits[hexdec(hash[index++]).modulo(charsets.digits.length)];
         pass = substr_replace(pass, character, position, 0);
     }
-    if(option('symbols')) {
+    if (option('symbols')) {
         var position = hexdec(hash[index++]).modulo(pass.length + 1);
         character = charsets.symbols[hexdec(hash[index++]).modulo(charsets.symbols.length)];
         pass = substr_replace(pass, character, position, 0);
@@ -97,19 +97,58 @@ function generate() {
 
     document.querySelector('#wrapper').innerHTML = '<p>'+ pass + '</p>';
     document.querySelector('#wrapper').style.fontFamily = 'Verdana, sans-serif';
-    document.querySelector('.link-back').removeAttribute('hidden');
     document.body.onclick = selectResult;
     document.body.onkeydown = selectResult;
 }
 
 function init() {
+    var publicKey = document.querySelector('#public_key');
+    var savePreset = document.querySelector('#save_preset');
+
+    publicKey.addEventListener('keyup', function(event) {
+        savePreset.classList.remove('valid');
+        savePreset.disabled = value('public_key') == '';
+        savePreset.innerHtml = 'Save preset';
+        chrome.storage.sync.get(['nikagi_presets'], function(presets) {
+            presets = presets.nikagi_presets;
+            if (preset = presets[value('public_key')]) {
+                document.querySelector('[name=length]').value = preset.length;
+                document.querySelector('[name=lowercases]').checked = preset.lowercases;
+                document.querySelector('[name=uppercases]').checked = preset.uppercases;
+                document.querySelector('[name=digits]').checked = preset.digits;
+                document.querySelector('[name=symbols]').checked = preset.symbols;
+            }
+        });
+    });
+
+    savePreset.addEventListener('click', function(event) {
+        event.preventDefault();
+        event.returnValue = false;
+        chrome.storage.sync.get(['nikagi_presets'], function(presets) {
+            presets = presets.nikagi_presets;
+            presets[value('public_key')] = {
+                length: value('length'),
+                lowercases: option('lowercases'),
+                uppercases: option('uppercases'),
+                digits: option('digits'),
+                symbols: option('symbols')
+            };
+            chrome.storage.sync.set({ nikagi_presets: presets }, function() {
+                savePreset.classList.add('valid');
+                savePreset.innerHTML = 'Preset saved';
+                publicKey.focus();
+            });
+        });
+    });
+
     var form = document.querySelector('#form');
-    form.addEventListener('onsubmit', function (event) {
+    form.addEventListener('submit', function (event) {
         event.preventDefault();
         event.returnValue = false;
         return generate();
     });
 }
+
 if (document.readyState != 'loading') {
     init();
 } else {

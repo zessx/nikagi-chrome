@@ -1,48 +1,67 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+    <meta charset="utf-8">
     <title>Nikagi</title>
 
     <link rel="stylesheet" href="/assets/css/popup.css">
     <script src="/assets/js/cryptojs.js"></script>
     <script src="/assets/js/popup.js"></script>
-
 </head>
 <body class="">
 <div id="wrapper">
     <form id="form" accept-charset="utf-8">
+
+        <div class="input-wrapper">
+            <input type="text" name="public_key" id="public_key" autocomplete="off" autocapitalize="none" autofocus required>
+            <label for="public_key">Public key</label>
+        </div>
+
+        <div class="input-wrapper">
+            <input type="password" name="private_key" id="private_key" autocomplete="off" autocapitalize="none" required>
+            <label for="private_key">Private key</label>
+        </div>
+        <br>
+
         <div class="input-wrapper">
             <label for="length">Use </label>
             <input type="number" name="length" id="length" min="4" max="32" autocomplete="off" value="16">
             <label for="length"> characters</label>
         </div>
+
         <div class="input-wrapper">
             <input type="checkbox" name="lowercases" id="lowercases" value="1" checked>
             <label for="lowercases">with lowercases</label>
         </div>
+
         <div class="input-wrapper">
             <input type="checkbox" name="uppercases" id="uppercases" value="1" checked>
             <label for="uppercases">with uppercases</label>
         </div>
+
         <div class="input-wrapper">
             <input type="checkbox" name="digits" id="digits" value="1" checked>
             <label for="digits">with digits</label>
         </div>
+
         <div class="input-wrapper">
             <input type="checkbox" name="symbols" id="symbols" value="1" checked>
             <label for="symbols">with symbols</label>
         </div>
-        <div class="input-wrapper">
-            <input type="text" name="public_key" id="public_key" autocomplete="off" autocapitalize="none" required>
-            <label for="public_key">Public key</label>
-        </div>
-        <div class="input-wrapper">
-            <input type="password" name="private_key" id="private_key" autocomplete="off" autocapitalize="none" required>
-            <label for="private_key">Private key</label>
-        </div>
+
         <input type="submit" value="Generate password">
+        <button id="save_preset" disabled>Save preset</button>
+        <br>
+
         <img src="/assets/images/logo.svg" alt="Nikagi" class="logo">
+
+        <!--
+        <div class="sync_presets">
+            <button id="import_presets">⇩ Export</button>
+            <button id="export_presets">Import ⇧</button>
+        </div>
+        -->
+
     </form>
 </div>
 
